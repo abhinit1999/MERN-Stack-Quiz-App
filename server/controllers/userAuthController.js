@@ -1,20 +1,20 @@
-const authModel = require("../models/authModel.js");
-const nodemailer = require("nodemailer");
+const userModel = require("../models/userModel");
+// const nodemailer = require("nodemailer");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-  // Admin Add question Model//
-const QuizData = require("../models/add_question.js");
+
 
 dotenv.config();
 
 
-class authController {
+class userauthController {
   static userRegistration = async (req, res) => {
     const { name, email, password } = req.body;
+    console.log(`${req.body}`)
     try {
       if (name && email && password) {
-        const isUser = await authModel.findOne({ email: email });
+        const isUser = await userModel.findOne({ email: email });
         if (isUser) {
           return res.status(400).json({ message: "user Already Exists" });
         } else {
@@ -24,7 +24,7 @@ class authController {
 
           // Generate Token
 
-          const secretKey = process.env.TOKEN;
+          const secretKey = process.env.USER_TOKEN;
 
           const token = jwt.sign({ email: email }, secretKey, {
             expiresIn: "10m",
@@ -32,16 +32,17 @@ class authController {
 
           const link = `http://localhost:9000/api/auth/verify/${token}`;
 
-          // sendEmailtoUser(link, email);
+       
           // save the user
-          const newUser = authModel({
+          const newUser = userModel({
             name,
             email,
             password: hashedPassword,
-            isVerified: false,
+          
           });
 
           const resUser = await newUser.save();
+          console.log(`${newUser}`);
           if (resUser) {
             return res
               .status(201)
@@ -59,11 +60,11 @@ class authController {
     const { email, password } = req.body;
     try {
       if (email && password) {
-        const isUser = await authModel.findOne({ email: email });
+        const isUser = await userModel.findOne({ email: email });
         if (isUser) {
           // Check is User Verified
 
-          const isVerifiedProfile = await authModel.findById(isUser._id);
+          const isVerifiedProfile = await userModel.findById(isUser._id);
 
           // if (isVerifiedProfile.isVerified) {
             if (
@@ -119,7 +120,7 @@ class authController {
       if (newpassword === confirmpassword) {
         const gensalt = await bcryptjs.genSalt(10);
         const hashedPassword = await bcryptjs.hash(newpassword, gensalt);
-        await authModel.findByIdAndUpdate(req.user._id, {
+        await userModel.findByIdAndUpdate(req.user._id, {
           password: hashedPassword,
         });
         return res
@@ -139,7 +140,7 @@ class authController {
     const { email } = req.body;
     try {
       if (email) {
-        const isUser = await authModel.findOne({ email: email });
+        const isUser = await userModel.findOne({ email: email });
         if (isUser) {
           // generate token
           const secretKey = isUser._id + "pleaseSubscribe";
@@ -310,7 +311,7 @@ class authController {
       if (newPassword && confirmPassword && id && token) {
         if (newPassword === confirmPassword) {
           // token verifiying
-          const isUser = await authModel.findById(id);
+          const isUser = await userModel.findById(id);
           const secretKey = isUser._id + "pleaseSubscribe";
           const isValid = await jwt.verify(token, secretKey);
           if (isValid) {
@@ -319,7 +320,7 @@ class authController {
             const genSalt = await bcryptjs.genSalt(10);
             const hashedPass = await bcryptjs.hash(newPassword, genSalt);
 
-            const isSuccess = await authModel.findByIdAndUpdate(isUser._id, {
+            const isSuccess = await userModel.findByIdAndUpdate(isUser._id, {
               $set: {
                 password: hashedPass,
               },
@@ -356,11 +357,11 @@ class authController {
         const secretKey = process.env.TOKEN;
         const isEmailVerified = await jwt.verify(token, secretKey);
         if (isEmailVerified) {
-          const getUser = await authModel.findOne({
+          const getUser = await userModel.findOne({
             email: isEmailVerified.email,
           });
 
-          const saveEmail = await authModel.findByIdAndUpdate(getUser._id, {
+          const saveEmail = await userModel.findByIdAndUpdate(getUser._id, {
             $set: {
               isVerified: true,
             },
@@ -385,16 +386,9 @@ class authController {
   };
 
 
-// Admin to add question for the QuizData;
-// static addQuestion = (req,res)=>
-// {
-//   const add_questions = new QuizData(req.body)
-//   add_questions.save()
-//   return res.status(200).json({message:"Question Added !!!"})
 
-// }
 
 
 }
 
-module.exports = authController;
+module.exports = userauthController;

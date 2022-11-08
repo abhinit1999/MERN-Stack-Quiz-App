@@ -1,0 +1,40 @@
+*
+{
+    margin: 0;padding: 0;
+
+}
+nav {
+    background-color: lightblue;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    
+
+
+  }
+  ul {
+    display: flex;
+    /* justify-content: space-between; */
+    /* align-items: center; */
+    padding: 10px;
+    
+  }
+ .li_des
+  {
+    text-decoration: none;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 2rem;
+    font-family: 'Courier New', Courier, monospace;
+  }
+  .li_des:hover
+  {
+    color: white;
+  }
+  li {
+    list-style: none;
+  }
+ 
+  

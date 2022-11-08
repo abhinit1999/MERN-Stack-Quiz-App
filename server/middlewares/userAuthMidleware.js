@@ -1,6 +1,5 @@
 const jwt =require( "jsonwebtoken");
-const authModel = require("../models/authModel.js");
-// const userModel = require("../models/userModel");
+const userModel = require("../models/userModel");
 
 const checkIsUserAuthenticated = async (req, res, next) => {
   let token;
@@ -11,7 +10,7 @@ const checkIsUserAuthenticated = async (req, res, next) => {
       // verify token
       const { userID } = jwt.verify(token, "pleaseSubscribe");
       // Get User from Token
-      req.user = await authModel.findById(userID).select("--password");
+      req.user = await userModel.findById(userID).select("--password");
       next();
     } catch (error) {
       return res.status(401).json({ message: "unAuthorized User" });

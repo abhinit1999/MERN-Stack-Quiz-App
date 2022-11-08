@@ -24,11 +24,11 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("api/auth/admin/register", input);
+      const response = await axios.post("api/auth/users/register", input);
       if (response.status === 201) {
         alert(response.data.message);
         console.log(response.data.message)
-        navigate("/admin-login");
+        navigate("/user-login");
       }
     } catch (error) {
       alert(error.response.data.message);
@@ -59,7 +59,7 @@ const Register = () => {
                           className="fas fa-cubes fa-2x me-3"
                           style={{ color: " #ff6219" }}
                         ></i>
-                        <span className="h1 fw-bold mb-0">Admin Registration </span>
+                        <span className="h1 fw-bold mb-0">User Registration </span>
                       </div>
 
                       <h5
@@ -118,7 +118,7 @@ const Register = () => {
 
                       <p className="mb-5 pb-lg-2" style={{ color: "#393f81" }}>
                         Already Have an Account?
-                        <Link to="/admin-login" style={{ color: "#393f81" }}>
+                        <Link to="/user-login" style={{ color: "#393f81" }}>
                           Login Here
                         </Link>
                       </p>

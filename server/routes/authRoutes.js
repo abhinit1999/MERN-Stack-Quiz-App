@@ -6,8 +6,8 @@ const checkIsUserAuthenticated =require ("../middlewares/authMiddleware.js");
 
 const router = express.Router();
 
-router.post("/users/register", authController.userRegistration);
-router.post("/users/login", authController.userLogin);
+router.post("/admin/register", authController.userRegistration);
+router.post("/admin/login", authController.userLogin);
 
 // Forget Password
 

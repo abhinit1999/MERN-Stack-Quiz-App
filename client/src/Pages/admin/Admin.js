@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./admin.css";
+
 const Admin = () => {
   const navigate = useNavigate();
   const [questionOption, setQuestionOption] = useState({
@@ -84,7 +85,8 @@ const Admin = () => {
           onClick={() => {
             localStorage.removeItem("token");
             localStorage.removeItem("name");
-            navigate("/login");
+            // navigate("/login");
+            navigate("/");
           }}
         >
           Logout

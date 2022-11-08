@@ -13,12 +13,12 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("api/auth/admin/login", input);
+      const response = await axios.post("api/auth/users/login", input);
       if (response.status === 200) {
         alert(response.data.message);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("name", response.data.name);
-        navigate("/admin-dashboard");
+        navigate("/user-dashboard");
       }
     } catch (error) {
       alert(error.response.data.message);
@@ -50,7 +50,7 @@ const Login = () => {
                           class="fas fa-cubes fa-2x me-3"
                           style={{ color: " #ff6219" }}
                         ></i>
-                        <span class="h1 fw-bold mb-0">Admin Login</span>
+                        <span class="h1 fw-bold mb-0">User Login</span>
                       </div>
                       <h5
                         class="fw-normal mb-3 pb-3"
@@ -101,7 +101,7 @@ const Login = () => {
                
                       <p class="mb-5 pb-lg-2" style={{ color: "#393f81" }}>
                         Don't have an account?{" "}
-                        <Link to="/admin-register" style={{ color: "#393f81" }}>
+                        <Link to="/user-register" style={{ color: "#393f81" }}>
                           Register here
                         </Link>
                       </p>
